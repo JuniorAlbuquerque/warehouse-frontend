@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:3331",
+  baseURL: "https://warehouse-backend.vercel.app/",
 });
 
 export default api;
