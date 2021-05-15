@@ -1,6 +1,10 @@
 import styled, { css } from "styled-components";
 import bg from "../../../assets/warehouse.png";
 
+interface IButton {
+  typeBtn?: string;
+}
+
 export const Container = styled.div`
   height: 100vh;
 
@@ -161,11 +165,35 @@ export const KeepConected = styled.div`
   }
 `;
 
-export const Button = styled.button`
-  width: 100%;
-  height: 5.4rem;
+const CancelButton = css`
+  border: 1px solid #8c8a97;
+  box-sizing: border-box;
+  border-radius: 8px;
+  background: none;
+  font-size: 1.4rem;
+  position: relative;
 
-  margin-top: 34px;
+  color: ${({ theme }) => theme.colors.gray03};
+
+  &:hover {
+    /* background: ${({ theme }) => theme.colors.error};
+    transition: 0.2s ease-out;
+    color: ${({ theme }) => theme.colors.white};
+    border: 1px solid ${({ theme }) => theme.colors.error}; */
+  }
+`;
+
+const SendButton = css`
+  font-size: 1.4rem;
+  background: #4e2ec3;
+  position: relative;
+`;
+
+export const Button = styled.button<IButton>`
+  width: 100%;
+  height: 4.8rem;
+
+  margin-top: 1.8rem;
   border-radius: 0.8rem;
   border: 0;
 
@@ -179,6 +207,9 @@ export const Button = styled.button`
   &:hover {
     filter: brightness(90%);
   }
+
+  ${(props) => props.typeBtn === "cancel" && CancelButton}
+  ${(props) => props.typeBtn === "send" && SendButton}
 `;
 
 export const NotAccount = styled.div`
@@ -207,7 +238,6 @@ export const NotAccount = styled.div`
 
 export const ForgotPassword = styled.div`
   display: flex;
-  flex: 1;
   margin-top: 8px;
 
   align-items: center;
@@ -217,6 +247,7 @@ export const ForgotPassword = styled.div`
     color: ${({ theme }) => theme.colors.blue};
     font-family: "Inter";
     font-size: 1.4rem;
+    cursor: pointer;
 
     font-weight: 500;
     margin-left: 8px;
@@ -240,11 +271,67 @@ export const Loader = styled.div`
   width: 45px;
   height: 45px;
   border-radius: 50%;
-  animation: rot 0.9s linear infinite;
+  animation: rot 0.7s linear infinite;
 
   @keyframes rot {
     100% {
       transform: rotate(360deg);
+    }
+  }
+`;
+
+export const LoaderButton = styled.div`
+  align-self: center;
+  margin: 0px auto;
+
+  background: linear-gradient(270deg, #fefefe 0%, rgba(0, 0, 0, 0.1) 20%);
+  /* Show only 10px from the border */
+  -webkit-mask: linear-gradient(270deg, #fefefe 0%, rgba(98, 60, 234, 0) 50%);
+
+  mask: radial-gradient(farthest-side, transparent calc(100% - 3px), #fff 0);
+
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  animation: rot 0.45s linear infinite;
+
+  @keyframes rot {
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
+
+export const ForgotContent = styled.div`
+  width: 100%;
+  background: #fff;
+  padding: 28px 32px;
+  max-width: 50rem;
+
+  border-radius: 8px;
+  display: flex;
+  flex-direction: column;
+
+  p {
+    font: 2rem Montserrat;
+    font-weight: 700;
+    margin-bottom: 24px;
+  }
+
+  span {
+    color: ${({ theme }) => theme.colors.gray02};
+    margin-bottom: 4px;
+  }
+`;
+
+export const ForgotButtons = styled.div`
+  display: flex;
+
+  button {
+    margin-right: 8px;
+
+    & + button {
+      margin-right: 0px;
     }
   }
 `;

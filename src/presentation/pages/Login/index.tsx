@@ -18,15 +18,24 @@ import {
   NotAccount,
   ForgotPassword,
   Loader,
+  ForgotContent,
+  ForgotButtons,
+  LoaderButton,
 } from "./styles";
 
 import keyIcon from "../../../assets/key-icon.svg";
 
 import { useToast } from "../../../data/hooks/toast";
 
+import Modal from "../../components/Modal";
+
 interface SignInCredentials {
   email: string;
   password: string;
+}
+
+interface IForgot {
+  emailRecovery: string;
 }
 
 const Login: React.FC = () => {
@@ -34,13 +43,15 @@ const Login: React.FC = () => {
 
   const [check, setCheck] = useState(false);
   const [disable, setDisable] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [showLoader, setShowLoader] = useState(false);
 
   const handleCheck = () => {
     setCheck(!check);
   };
 
   const handleLogin = useCallback(
-    async (data: SignInCredentials) => {
+    async (data: SignInCredentials, { reset }) => {
       setDisable(true);
 
       try {
@@ -66,6 +77,29 @@ const Login: React.FC = () => {
           message: "Authentication failed",
         });
       }
+    },
+    [addToast]
+  );
+
+  const handleForgot = useCallback(
+    async (data: IForgot, { reset }) => {
+      setShowLoader(true);
+      console.log(data);
+
+      setTimeout(() => {
+        setShowLoader(false);
+
+        addToast({
+          type: "success",
+          title: "Success",
+          message: `E-mail has sent`,
+        });
+
+        setTimeout(() => {
+          setOpen(false);
+          reset();
+        }, 500);
+      }, 2000);
     },
     [addToast]
   );
@@ -117,7 +151,7 @@ const Login: React.FC = () => {
 
             <ForgotPassword>
               <img src={keyIcon} alt="" />
-              <span>I forgot my password</span>
+              <span onClick={() => setOpen(true)}>I forgot my password</span>
             </ForgotPassword>
 
             {disable && <Loader />}
@@ -128,6 +162,33 @@ const Login: React.FC = () => {
           </Footer>
         </Wrapper>
       </Content>
+
+      <Modal open={open} setOpen={setOpen}>
+        <ForgotContent>
+          <p>Forgot your password?</p>
+
+          <span>Enter your email to receive recovery instructions</span>
+          <FormWeb onSubmit={handleForgot}>
+            <Field>
+              <Input name="emailRecovery" type="email" required />
+              <label>E-mail</label>
+            </Field>
+
+            <ForgotButtons>
+              <Button
+                type="button"
+                typeBtn="cancel"
+                onClick={() => setOpen(false)}
+              >
+                Cancel
+              </Button>
+              <Button typeBtn="send" type="submit">
+                {showLoader ? <LoaderButton /> : "Send"}
+              </Button>
+            </ForgotButtons>
+          </FormWeb>
+        </ForgotContent>
+      </Modal>
       <Background></Background>
     </Container>
   );

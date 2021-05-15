@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import api from "../../../infra/services/api";
 
@@ -11,8 +11,8 @@ import {
   Wrapper,
   Header,
   Form,
-  Tabs,
-  Tab,
+  // Tabs,
+  // Tab,
   Field,
   Button,
 } from "./styles";
@@ -28,11 +28,10 @@ const SignUp: React.FC = () => {
   const { addToast } = useToast();
 
   const history = useHistory();
-  const [activeTab, setActiveTab] = useState(0);
+  // const [activeTab, setActiveTab] = useState(0);
   const [plants, setPlants] = useState([] as any);
   const [deps, setDeps] = useState([] as any);
   const [step, setStep] = useState(0);
-  const [name, setName] = useState("");
   const [dataCreate, setDataCreate] = useState({
     employeeName: "",
     employeeId: "",
@@ -44,13 +43,11 @@ const SignUp: React.FC = () => {
     userName: "",
     password: "",
   });
-  const [plantId, setPlantId] = useState(1);
-  const [depId, setDepId] = useState(1);
 
-  const tabs = [
-    { id: 0, tab: "Supervisor", component: "" },
-    { id: 1, tab: "Funcionário", component: "" },
-  ];
+  // const tabs = [
+  //   { id: 0, tab: "Supervisor", component: "" },
+  //   { id: 1, tab: "Funcionário", component: "" },
+  // ];
 
   const handleBack = () => {
     history.push("/");
@@ -62,9 +59,6 @@ const SignUp: React.FC = () => {
 
     setPlants(response.data);
     setDeps(responseDeps.data);
-
-    setPlantId(response.data[0].id);
-    setDepId(responseDeps.data[0].id);
   };
 
   const handleCreate = async (data: any) => {
@@ -73,11 +67,11 @@ const SignUp: React.FC = () => {
     }
 
     if (step === 2) {
-      if (activeTab === 0) {
-        setDataCreate({ ...dataCreate, functionEmployee: "1" });
-      } else {
-        setDataCreate({ ...dataCreate, functionEmployee: "2" });
-      }
+      // if (activeTab === 0) {
+      //   setDataCreate({ ...dataCreate, functionEmployee: "1" });
+      // } else {
+      //   setDataCreate({ ...dataCreate, functionEmployee: "2" });
+      // }
 
       try {
         await api.post("/user/register", dataCreate);
@@ -114,7 +108,7 @@ const SignUp: React.FC = () => {
 
         <Form>
           <h2>Sign Up</h2>
-          <Tabs>
+          {/* <Tabs>
             {tabs.map((item) => (
               <Tab
                 key={item.id}
@@ -124,9 +118,26 @@ const SignUp: React.FC = () => {
                 <span>{item.tab}</span>
               </Tab>
             ))}
-          </Tabs>
+          </Tabs> */}
 
           <FormWeb onSubmit={handleCreate}>
+            {step === 0 && (
+              <Field>
+                <Input
+                  name="employeeId"
+                  required
+                  value={dataCreate.employeeId}
+                  onChange={(e) =>
+                    setDataCreate({
+                      ...dataCreate,
+                      employeeId: e.target.value,
+                    })
+                  }
+                />
+                <label htmlFor="">Registration</label>
+              </Field>
+            )}
+
             {(step === 0 || step === 2) && (
               <Field>
                 <Input
@@ -144,22 +155,6 @@ const SignUp: React.FC = () => {
               </Field>
             )}
 
-            {step === 0 && (
-              <Field>
-                <Input
-                  name="employeeId"
-                  value={dataCreate.employeeId}
-                  onChange={(e) =>
-                    setDataCreate({
-                      ...dataCreate,
-                      employeeId: e.target.value,
-                    })
-                  }
-                />
-                <label htmlFor="">Registration</label>
-              </Field>
-            )}
-
             {(step === 0 || step === 1) && (
               <>
                 <Field>
@@ -167,6 +162,7 @@ const SignUp: React.FC = () => {
                     name="plantEmployee"
                     value={dataCreate.plantEmployee}
                     required
+                    disabled={step !== 0}
                     onChange={(e) =>
                       setDataCreate({
                         ...dataCreate,
@@ -191,6 +187,7 @@ const SignUp: React.FC = () => {
                     name="departmentEmployee"
                     value={dataCreate.departmentEmployee}
                     required
+                    disabled={step !== 0}
                     onChange={(e) =>
                       setDataCreate({
                         ...dataCreate,
@@ -218,6 +215,7 @@ const SignUp: React.FC = () => {
                   <Input
                     name="ramal"
                     value={dataCreate.ramal}
+                    required
                     onChange={(e) =>
                       setDataCreate({
                         ...dataCreate,
@@ -232,6 +230,7 @@ const SignUp: React.FC = () => {
                   <Input
                     name="sector"
                     value={dataCreate.sector}
+                    required
                     onChange={(e) =>
                       setDataCreate({
                         ...dataCreate,

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 import { animated } from "react-spring";
 
 interface Type {
@@ -8,9 +8,15 @@ interface Type {
 }
 
 const toastVariations = {
-  success: "#44E4E4",
-  error: "#F64F77",
-  warning: "#F8AE3F",
+  success: css`
+    background: ${({ theme }) => theme.colors.success};
+  `,
+  error: css`
+    background: ${({ theme }) => theme.colors.error};
+  `,
+  warning: css`
+    background: ${({ theme }) => theme.colors.warning};
+  `,
 };
 
 export const Container = styled(animated.div)`
@@ -51,7 +57,9 @@ export const ToastContent = styled(animated.div)<Type>`
 
     width: 8px;
     height: 101.8%;
-    background: ${(props) => toastVariations[props.type || "success"]};
+
+    ${(props) => toastVariations[props.type || "success"]};
+
     position: absolute;
     top: -1px;
     left: -0.7px;

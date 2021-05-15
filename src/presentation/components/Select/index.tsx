@@ -9,6 +9,7 @@ interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
 }
 
 const Select: React.FC<SelectProps> = ({ name, ...rest }) => {
+  // eslint-disable-next-line
   const { fieldName, defaultValue, error, registerField } = useField(name);
   const selectRef = useRef(null);
 

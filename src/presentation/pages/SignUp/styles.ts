@@ -92,6 +92,7 @@ export const Form = styled.div`
     font-size: 3.2rem;
 
     font-weight: 700;
+    margin-bottom: 1.8rem;
   }
 
   animation: slide 0.55s cubic-bezier(0.68, -0.55, 0.27, 1.75) forwards;

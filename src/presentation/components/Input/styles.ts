@@ -1,8 +1,8 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Container = styled.input`
   width: 100%;
-  height: 5.4rem;
+  height: 4.8rem;
   padding: 4px 14px;
 
   margin-top: 8px;
@@ -16,4 +16,4 @@ export const Container = styled.input`
       color: ${({ theme }) => theme.colors.gray01};
     }
   }
-`
+`;

@@ -1,20 +1,24 @@
-import 'styled-components'
+import "styled-components";
 
-declare module 'styled-components' {
+declare module "styled-components" {
   export interface DefaultTheme {
-    title: string
+    title: string;
 
     colors: {
-      primary: string
+      primary: string;
 
-      blue: string
+      blue: string;
 
-      gray: string
-      gray01: string
-      gray02: string
-      gray03: string
+      gray: string;
+      gray01: string;
+      gray02: string;
+      gray03: string;
 
-      white: string
-    }
+      white: string;
+
+      success: string;
+      error: string;
+      warning: string;
+    };
   }
 }

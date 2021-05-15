@@ -12,14 +12,15 @@ import {
 import { ToastMessage } from "../../../data/protocols/IToast";
 
 import { useToast } from "../../../data/hooks/toast";
+import theme from "../../styles/themes/defaultTheme";
 
 const Toast: React.FC<ToastMessage> = ({ type, title, message, show }) => {
   const { removeToast } = useToast();
 
   const showIcon = {
-    success: <RiCheckboxCircleFill color="#44E4E4" size={28} />,
-    error: <RiCloseCircleFill color="#F64F77" size={28} />,
-    warning: <RiErrorWarningFill color="#F8AE3F" size={28} />,
+    success: <RiCheckboxCircleFill color={theme.colors.success} size={28} />,
+    error: <RiCloseCircleFill color={theme.colors.error} size={28} />,
+    warning: <RiErrorWarningFill color={theme.colors.warning} size={28} />,
   };
 
   const props = useSpring({
