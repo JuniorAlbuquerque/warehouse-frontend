@@ -17,7 +17,6 @@ export const Background = styled.div`
   background-size: cover;
   display: initial;
   width: 50%;
-
   h4 {
     font-family: "Montserrat";
     font-weight: 700;
@@ -34,10 +33,10 @@ export const Background = styled.div`
 
 export const Content = styled.div`
   width: 50%;
-  margin: auto;
   max-width: 740px;
   display: flex;
   padding: 20px 0px;
+  margin: auto;
 `;
 export const Wrapper = styled.div`
   display: flex;
@@ -65,11 +64,17 @@ const anime = css`
 `;
 
 export const Form = styled.div`  
+  h3 {
+    font-family: "Montserrat";
+    margin-bottom: 14px;
+    color: #7A7786;
+    font-size: 12px;
+  }
   h1 {
     font-family: "Montserrat";
     margin-bottom: 14px;
   }
-
+  
   hr {
     margin: 2rem 0;
     border-bottom: 1px solid ${({ theme }) => theme.colors.gray05};
@@ -78,6 +83,22 @@ export const Form = styled.div`
 
   animation: slide 0.55s cubic-bezier(0.68, -0.55, 0.27, 1.75) forwards;
   ${anime}
+`;
+
+export const Back = styled.div`
+  display: inline-flex;
+  width: auto;
+  align-items: center;  
+  cursor: pointer;
+
+  img {
+    width: 17px;
+    height: 17px;
+    margin-right: 10px;
+  }
+  h3 {
+    margin: 0;
+  }
 `;
 
 export const Field = styled.div`
@@ -248,14 +269,13 @@ export const ForgotPassword = styled.div`
     font-family: "Inter";
     font-size: 1.4rem;
     cursor: pointer;
-    text-decoration: underline;
+
     font-weight: 500;
     margin-left: 8px;
   }
 `;
 
 export const Footer = styled.footer`
-border: 1px solid red;
 `;
 
 export const Loader = styled.div`
