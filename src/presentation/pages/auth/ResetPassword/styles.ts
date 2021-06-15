@@ -63,7 +63,7 @@ const anime = css`
   }
 `;
 
-export const Form = styled.div`  
+export const Form = styled.form`  
   h3 {
     font-family: "Montserrat";
     margin-bottom: 14px;
@@ -79,6 +79,12 @@ export const Form = styled.div`
     margin: 2rem 0;
     border-bottom: 1px solid ${({ theme }) => theme.colors.gray05};
     opacity: 0.2;
+  }
+
+  .control {
+    button{
+      width: 100%;
+    }
   }
 
   animation: slide 0.55s cubic-bezier(0.68, -0.55, 0.27, 1.75) forwards;
