@@ -3,6 +3,7 @@ export default {
   title: "default",
 
   colors: {
+    black: "#000",
     primary: "#734DFF",
     primary02: "#623CEA",
     blue: "#5A67DF",
@@ -11,6 +12,7 @@ export default {
     gray02: "#4E4B59",
     gray03: "#5F5C6B",
     gray05: "#8C8A97",
+    secondaryBlue: "#3B5BDB",
     
     
     white: "#FFFf",

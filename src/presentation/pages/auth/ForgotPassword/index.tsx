@@ -1,11 +1,12 @@
 import React, { useState, useCallback } from "react";
-
-import { Link } from "react-router-dom";
-import { Form as FormWeb } from "@unform/web";
-import api from "infra/services/api";
-import Input from "../../../components/Input";
+import { useForm } from 'react-hook-form';
 import { useHistory } from 'react-router-dom';
 
+//API
+import api from "infra/services/api";
+import { FORGOT_PASSWORD } from "infra/config/api";
+
+//STYLES
 import {
   Container,
   Background,
@@ -14,7 +15,6 @@ import {
   Back,
   Footer,
   Wrapper,
-  Field,
   KeepConected,
   Button,
   NotAccount,
@@ -24,100 +24,61 @@ import {
   LoaderButton,
 } from "./styles";
 
-//import keyIcon from "../../../assets/key-icon.svg";
+import { Field, Input  } from "presentation/styles/defaults";
+
+//COMPONENTS
+// import Input from "presentation/components/Input";
+import ButtonDefault from "presentation/components/ButtonDefault";
+import Loading from "presentation/components/Loading";
 import { useToast } from "data/hooks/toast";
-
-import Modal from "../../../components/Modal";
-
 
 //ASSETS
 import ArrowLeft from "assets/icons/arrow-left.svg";
-import keyIcon from "assets/key-icon.svg";
 
-interface SignInCredentials {
-  email: string;
-  password: string;
-}
-
-interface IForgot {
-  emailRecovery: string;
-}
+type ValidateEntry = {
+  user_email: string;  
+};
 
 const ForgotPassword: React.FC = () => {
-  const { addToast } = useToast();
+  const { register, handleSubmit, formState: { errors } } = useForm<ValidateEntry>();
   const history = useHistory();
+  const [controlLoading, setControlLoading] = useState<string>('no');
+  const { addToast } = useToast();
   const [check, setCheck] = useState(false);
   const [disable, setDisable] = useState(false);
-  const [open, setOpen] = useState(false);
-  const [showLoader, setShowLoader] = useState(false);
+  const [userEmail, setUserEmail] = useState('');
 
   const handleCheck = () => {
     setCheck(!check);
   };
 
-  const handleLogin = useCallback(
-    async (data: SignInCredentials, { reset }) => {
-      setDisable(true);
+  const onSubmit = (data: ValidateEntry) => {
+    handleSend();
+  }
 
-      try {
-        const response = await api.post("/user/login", data);
-
-        setTimeout(() => {
-          setDisable(false);
-
-          setTimeout(() => {
-            addToast({
-              type: "success",
-              title: "Success",
-              message: `User ${response.data.results[0].userName} authenticated`,
-            });
-          }, 300);
-        }, 500);
-      } catch (error) {
-        setDisable(false);
-
-        addToast({
-          type: "error",
-          title: "Error",
-          message: "Authentication failed",
-        });
-      }
-    },
-    [addToast]
-  );
-
-  const handleForgot = useCallback(
-    async (data: IForgot, { reset }) => {
-      setShowLoader(true);
-      console.log(data);
-
-      setTimeout(() => {
-        setShowLoader(false);
-
-        addToast({
-          type: "success",
-          title: "Success",
-          message: `E-mail has sent`,
-        });
-
-        setTimeout(() => {
-          setOpen(false);
-          reset();
-        }, 500);
-      }, 2000);
-    },
-    [addToast]
-  );
+  const handleSend = () => {
+    setControlLoading('yes');
+    const payload = {
+      employee_email: userEmail,
+    }
+    api.post(FORGOT_PASSWORD, payload)
+    .then((res) =>{
+      setControlLoading('no');
+      history.push('/emailsent');
+    })
+    .catch((err) => {
+      setControlLoading('no');
+      console.log(err);
+    })
+  }
 
   return (
-    <Container>
-      <Background>
-      <h4>ICCT</h4>
-
-      </Background>
+    <Container>      
       <Content>
-        <Wrapper>        
-          <Form>
+        <Wrapper>
+            <Form
+                onSubmit={handleSubmit(onSubmit)}
+              >
             <Back onClick={() => history.push('/')}>
               <img src={ArrowLeft} alt="Icon Back" />
               <h3>BACK TO LOGIN</h3>  
@@ -126,70 +87,39 @@ const ForgotPassword: React.FC = () => {
               <p>Send a link to your email to reset you password</p>
               <hr/>
 
-            <FormWeb onSubmit={handleLogin}>
+            <div>
               <Field>
-                <Input required name="userName" />
-                <label>Email *</label>
+                  <label>E-mail *</label>
+                  <Input
+                    type="email"
+                    autoComplete="off"
+                    {...register("user_email", { required: true })}
+                    onChange={(e) => setUserEmail(e.target.value)}
+                    name="user_email"
+                    maxLength={45}                    
+                  />
+                  <span style={{opacity :  errors.user_email && errors.user_email.type === 'required' ? 1 : 0 }}>Required field</span>
               </Field>
-
-
-              {/* <KeepConected>
-                <input
-                  type="checkbox"
-                  checked={check}
-                  onChange={handleCheck}
-                  name=""
-                  id="check"
+              <div className="control">
+                <ButtonDefault
+                  title="Send"
+                  disabled={controlLoading === 'yes' ?  true :  false }
                 />
-                <label htmlFor="check">Keep conected</label>
-              </KeepConected> */}
-
-              <Button disabled={disable}>Sign In</Button>
-            </FormWeb>
-
-            {/* <NotAccount>
-              <p>
-                Don't you have an account?
-                <Link to="/signup">
-                  <span>Sign up</span>
-                </Link>
-              </p>
-            </NotAccount>           */}
+               </div>              
+              <Loading
+                size="small"
+                visible={controlLoading}
+                space="spaceTop"
+              />
+            </div>
+            
             {disable && <Loader />}
           </Form>
-
-          {/* <Footer>
-            <span>Develop by @jnr</span>
-          </Footer> */}
         </Wrapper>
       </Content>
-
-      <Modal open={open} setOpen={setOpen}>
-        <ForgotContent>
-          <p>Forgot your password?</p>
-
-          <span>Enter your email to receive recovery instructions</span>
-          <FormWeb onSubmit={handleForgot}>
-            <Field>
-              <Input name="emailRecovery" type="email" required />
-              <label>E-mail</label>
-            </Field>
-
-            <ForgotButtons>
-              <Button
-                type="button"
-                typeBtn="cancel"
-                onClick={() => setOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button typeBtn="send" type="submit">
-                {showLoader ? <LoaderButton /> : "Send"}
-              </Button>
-            </ForgotButtons>
-          </FormWeb>
-        </ForgotContent>
-      </Modal>      
+      <Background>
+      {/* <h4>ICCT</h4> */}
+      </Background>
     </Container>
   );
 };

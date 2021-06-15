@@ -5,34 +5,35 @@ import {
   Route,
   Redirect,
 } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-// AUTHS
-import Login from '../../presentation/pages/Login'
-import SignUp from 'presentation/pages/SignUp'
-import ForgotPassword from 'presentation/pages/auth/ForgotPassword';
-import ResetPassword from 'presentation/pages/auth/ResetPassword';
+//TRATAMENTO DE SESSAO DE LOGIN
+import { SessionData } from 'data/store/reducers';
 
-// LAYOUTS
-import TopAndSide from 'presentation/layouts/TopAndSide';
+//ROUTES
+import Auth from './Auth';
+import Administrator from './Administrator';
 
-// DASHBOARD
-import Plants from 'presentation/pages/dashboard/Plants';
+function Routes ({ session }: { session: SessionData }){
 
-
-const Routes: React.FC = () => (
-  <Switch>
-    {/* AUTHS */}
-    <Route path="/" exact component={Login} />
-    <Route path="/signup" exact component={SignUp} />
-    <Route path="/forgotpassword" exact component={ForgotPassword} />
-    <Route path="/resetpassword" exact component={ResetPassword} />
-    {/* DASHBOARD */}
-    <Route path="/dashboard/plants" exact>
-      <TopAndSide>
-        <Plants />
-      </TopAndSide>
+  function renderPageRoutes () {
+    if(session.user.user_name !== 'nothing') {
+      return Administrator;      
+    }else{
+      return Auth;
+    }
+  }
+  return (
+    <Route>
+      {renderPageRoutes()}
     </Route>
-  </Switch>
-)
+  );
+}
 
-export default Routes;
+function mapStateToProps(state: any) {
+  return {
+    session: state.session,
+  };
+}
+
+export default connect(mapStateToProps)(Routes);

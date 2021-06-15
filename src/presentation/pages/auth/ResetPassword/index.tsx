@@ -1,11 +1,15 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useCallback, useEffect } from "react";
+import { useForm } from 'react-hook-form';
 
-import { Link } from "react-router-dom";
-import { Form as FormWeb } from "@unform/web";
-import api from "infra/services/api";
-import Input from "../../../components/Input";
+import { useParams } from "react-router-dom";
 import { useHistory } from 'react-router-dom';
 
+//API
+import api from "infra/services/api";
+import { VALIDATE_TOKE, RESET_PASSWORD } from "infra/config/api";
+
+
+//STYLES
 import {
   Container,
   Background,
@@ -14,7 +18,6 @@ import {
   Back,
   Footer,
   Wrapper,
-  Field,
   KeepConected,
   Button,
   NotAccount,
@@ -23,9 +26,13 @@ import {
   ForgotButtons,
   LoaderButton,
 } from "./styles";
+import { Field, Input  } from "presentation/styles/defaults";
 
+
+//COMPONENTS
 import { useToast } from "data/hooks/toast";
-import Modal from "../../../components/Modal";
+import ButtonDefault from "presentation/components/ButtonDefault";
+import Loading from "presentation/components/Loading";
 
 //ASSETS
 import ArrowLeft from "assets/icons/arrow-left.svg";
@@ -35,6 +42,15 @@ interface SignInCredentials {
   password: string;
 }
 
+interface ParamType {
+  token : string
+}
+
+type ValidateEntry = {
+  password: string,
+  confirm_password: string,
+};
+
 interface IForgot {
   emailRecovery: string;
 }
@@ -42,14 +58,57 @@ interface IForgot {
 const ResetPassword: React.FC = () => {
   const { addToast } = useToast();
   const history = useHistory();
+  const { register, handleSubmit, formState: { errors } } = useForm<ValidateEntry>();
+  const { token } = useParams<ParamType>();
   const [check, setCheck] = useState(false);
   const [disable, setDisable] = useState(false);
   const [open, setOpen] = useState(false);
   const [showLoader, setShowLoader] = useState(false);
+  const [controlLoading, setControlLoading] = useState<string>('no');
+  const [id, setId] = useState <number>();
+  const [datas, setDatas] =  useState({    
+    password: '',
+    confirm_password: ''
+  })
 
-  const handleCheck = () => {
-    setCheck(!check);
+  const updateData = (name: string, value: string) => {    
+    if (name !== null && value !== null) {
+        setDatas({ ...datas, [name]: value });
+    }
   };
+
+  const onSubmit = (data: ValidateEntry) => {
+    handleCheckPassword();
+    };
+
+    const handleChangePassword = () => {        
+      setControlLoading('yes');
+        const payload = {
+          password: datas.password,
+          token: token,
+        }
+        api
+        .put(RESET_PASSWORD+id, payload)
+        .then((res) => {
+          setControlLoading('no');
+            console.log(res.data);
+            addToast({
+              type: "success",
+              title: "Password changed successfully",
+              message: `Sucess`,
+            });
+            history.push('/');
+        })
+        .catch((err) => {
+          setControlLoading('no');
+            addToast({
+              type: "error",
+              title: "Error",
+              message: "Error",
+            });
+        })
+    }
+
 
   const handleLogin = useCallback(
     async (data: SignInCredentials, { reset }) => {
@@ -80,87 +139,92 @@ const ResetPassword: React.FC = () => {
     [addToast]
   );
 
-  const handleForgot = useCallback(
-    async (data: IForgot, { reset }) => {
-      setShowLoader(true);
-      console.log(data);
+  const handleCheckPassword = () => {
+    if (datas.password === datas.confirm_password){
+      handleChangePassword();
+    }else{
+      addToast({
+        type: "error",
+        title: "Error",
+        message: "Passwords do not match",
+      }); 
+    }
+  }
 
-      setTimeout(() => {
-        setShowLoader(false);
+  useEffect(() => {
+    let payload = {
+        token
+    }
+    api
+        .post(VALIDATE_TOKE, payload)
 
-        addToast({
-          type: "success",
-          title: "Success",
-          message: `E-mail has sent`,
+        .then((res) => {
+            console.log(res.data);
+            setId(res.data.user_id);
+            // updatePayload('token', token);
+        })
+        .catch((err) => {
+            history.push('/errorpage');
         });
-
-        setTimeout(() => {
-          setOpen(false);
-          reset();
-        }, 500);
-      }, 2000);
-    },
-    [addToast]
-  );
+}, []);
 
   return (
     <Container>
       <Background>
       <h4>ICCT</h4>
-
       </Background>
       <Content>
         <Wrapper>        
-          <Form>
+          <Form
+              onSubmit={handleSubmit(onSubmit)}
+            >
             <Back onClick={() => history.push('/')}>
               <img src={ArrowLeft} alt="Icon Back" />
               <h3>BACK TO LOGIN</h3>  
             </Back>
-              <h1>Forgot Password</h1>
+              <h1>Reset Password</h1>
               <p>Send a link to your email to reset you password</p>
               <hr/>
 
-            <FormWeb onSubmit={handleLogin}>
               <Field>
-                <Input required name="newPassword" />
-                <label>New Password *</label>
-              </Field>
-              <Field>
-                <Input required name="confirmPassword" />
-                <label>Confirm Password *</label>
+                  <label>New Password *</label>
+                  <Input
+                    type="password"
+                    autoComplete="off"
+                    {...register("password", { required: true })}
+                    onChange={(e) => updateData(e.target.name, e.target.value)}
+                    name="password"
+                    maxLength={45}                    
+                  />
+                  <span style={{opacity :  errors.password && errors.password.type === 'required' ? 1 : 0 }}>Required field</span>
               </Field>
 
-              <Button disabled={disable}>Save New Password</Button>
-            </FormWeb>
-            {disable && <Loader />}
+              <Field>
+                  <label>Confirm Password *</label>
+                  <Input
+                    type="password"
+                    autoComplete="off"
+                    {...register("confirm_password", { required: true })}
+                    onChange={(e) => updateData(e.target.name, e.target.value)}
+                    name="confirm_password"
+                    maxLength={45}                    
+                  />
+                  <span style={{opacity :  errors.confirm_password && errors.confirm_password.type === 'required' ? 1 : 0 }}>Required field</span>
+              </Field>
+              <div className="control">
+                <ButtonDefault
+                  title="Save New Password"
+                  disabled={controlLoading === 'yes' ?  true :  false }
+                />
+               </div>              
+              <Loading
+                size="small"
+                visible={controlLoading}
+                space="spaceTop"
+              />
           </Form>
         </Wrapper>
       </Content>
-
-      <Modal open={open} setOpen={setOpen}>
-        <ForgotContent>
-          <p>Forgot your password?</p>
-          <span>Enter your email to receive recovery instructions</span>
-          <FormWeb onSubmit={handleForgot}>
-            <Field>
-              <Input name="emailRecovery" type="email" required />
-              <label>E-mail</label>
-            </Field>
-            <ForgotButtons>
-              <Button
-                type="button"
-                typeBtn="cancel"
-                onClick={() => setOpen(false)}
-              >
-                Cancel
-              </Button>
-              <Button typeBtn="send" type="submit">
-                {showLoader ? <LoaderButton /> : "Send"}
-              </Button>
-            </ForgotButtons>
-          </FormWeb>
-        </ForgotContent>
-      </Modal>      
     </Container>
   );
 };
