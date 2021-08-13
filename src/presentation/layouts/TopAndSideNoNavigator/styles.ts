@@ -19,7 +19,7 @@ export const Top = styled.div`
         justify-content: space-between;        
         align-items: center;
         padding: 0 1rem;
-        background-color: ${({ theme }) => theme.colors.secondaryBlue};
+        background-color: ${({ theme }) => theme.colors.blue7};
         h1{                        
             font-size: 18px;
             font-weight: 600;
@@ -90,7 +90,7 @@ export const MainBody = styled.div`
 
 export const Side = styled.div`
     /* background-color: ${({ theme }) => theme.colors.white}; */
-    background-color: ${({ theme }) => theme.colors.secondaryBlue};
+    background-color: ${({ theme }) => theme.colors.blue7};
     border: none;
     border-right: 2px solid ${({ theme }) => theme.colors.white01};
     /* border-bottom: 2px solid ${({ theme }) => theme.colors.white01}; */

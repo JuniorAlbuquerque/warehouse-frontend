@@ -103,9 +103,6 @@ export const FormAdd = styled.div`
     }    
 `;
 
-interface TableSizes {
-    tam: number;
-}
 export const HeaderTable = styled.ul`
     list-style: none;
     display: flex;

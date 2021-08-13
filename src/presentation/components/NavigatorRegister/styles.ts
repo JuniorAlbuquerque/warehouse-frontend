@@ -2,6 +2,7 @@ import styled, { css } from "styled-components";
 
 
 export const ContainerTilePage = styled.ul`
+    border: 1px solid red;
     margin-top: 1.5rem;
     list-style: none;
     display: flex;

@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const ContainerTopAndSide =  styled.div`
     width: 100%;
-    background-color: ${({ theme }) => theme.colors.white01};    
+    background-color: ${({ theme }) => theme.colors.gray00};
 `;
 
 export const BackgroundMenu = styled.div`    
@@ -22,9 +22,10 @@ export const BackgroundMenu = styled.div`
 
 export const Top = styled.div`
     height:  9.63855421686747vh;
-    background-color: ${({ theme }) => theme.colors.white};
+    background-color: ${({ theme }) => theme.colors.gray00};
     border-bottom: 2px solid ${({ theme }) => theme.colors.white01};
     display: flex;
+
     .logo{
         width: 240px;
         max-width: 240px;
@@ -34,31 +35,38 @@ export const Top = styled.div`
         justify-content: space-between;        
         align-items: center;
         padding: 0 1rem;
-        background-color: ${({ theme }) => theme.colors.secondaryBlue};
+        /* border: 1px solid red; */
+        padding-left: 2rem;
+        background-color: ${({ theme }) => theme.colors.white};
         h1{                        
             font-size: 18px;
             font-weight: 600;
             color: ${({ theme }) => theme.colors.white01};
-        }
+        }        
+    }
+
+    .options{
+        display: flex;
+        align-items: center;
+        justify-content: center;
         svg {
             height: 24px;
             width: 24px;
             cursor: pointer;
         }
+
+        svg:last-child {
+            margin-left: 28px;
+        }
     }
 
-    .newOptions{
-        /* max-width: 1136px; */
-        width: 75%;
-        display: flex;
-        margin: auto;
-    }
+
+
     .contenTop{    
-        /* max-width: 1136px; */
         width: 75%;
         margin: auto;
         display: flex;
-        justify-content: flex-end;
+        justify-content: space-between;
         position: relative;
         ul {
             list-style: none;
@@ -140,11 +148,10 @@ export const HeaderMenuLink = styled.div`
 export const MainBody = styled.div`
     display: flex;
     height: 90.36144578313253vh;    
-`;
+    `;
 
-export const Side = styled.div`
-    /* background-color: ${({ theme }) => theme.colors.white}; */
-    background-color: ${({ theme }) => theme.colors.secondaryBlue};
+export const Side = styled.div`    
+    background-color: ${({ theme }) => theme.colors.white};
     border: none;
     border-right: 2px solid ${({ theme }) => theme.colors.white01};
     /* border-bottom: 2px solid ${({ theme }) => theme.colors.white01}; */
@@ -171,21 +178,30 @@ export const OptionItem = styled.div<Props>`
             font-family: "Roboto";
             font-size: 14px;
             font-weight: 400;
-            color: ${({ theme }) => theme.colors.white};
+            color: ${({ theme }) => theme.colors.gray07};
+        }
+        svg {
+            height: 20px;
+            width: 20px;
+        }
+    }
+    svg {            
+        path {
+            stroke: ${({ theme }) => theme.colors.blue7};
         }
     }
     :hover {
         background-color: ${({ theme }) => theme.colors.white};
-        span{            
+        span{          
             color: ${({ theme }) => theme.colors.secondaryBlue};
         }
         svg {            
             path {
-                stroke: ${({ theme }) => theme.colors.secondaryBlue};
+                stroke: ${({ theme }) => theme.colors.blue7};
             }
         }
     }
-    .item-icon-svg{
+    .item-icon-svg{        
         width: 20px;
         height: 20px;        
         transition: transform 0.2s ease;
@@ -206,32 +222,47 @@ export const Options = styled.ul<Props>`
     transform: scaleY(${(props) => props.controlRegister && 1});    
     transform-origin: top;    
     li{
+        display: flex;
+        align-items: center;
+        
         padding: 1rem 0;
+        padding-left: 30px;
+        svg {
+            height: 20px;
+            width: 20px;                        
+        }
         span{
-            margin-left: 30px;
+            margin-left: 15px;
             font-family: "Roboto";
             font-size: 12px;
             font-weight: 400;
-            color: ${({ theme }) => theme.colors.white};
+            color: ${({ theme }) => theme.colors.gray07};
         }        
         :hover {
             cursor: pointer;
-            background-color: #E8E8E1;
+            /* background-color: #E8E8E1; */
             span{
                 color: ${({ theme }) => theme.colors.primary02};
             }
-            /* svg {
-                filter: red;
-            } */
+            svg {
+                path {
+                    stroke: ${({ theme }) => theme.colors.secondaryBlue};
+                }
+            }
         }
     }
 
     .selected {
         cursor: pointer;
-        border: 1px solid red !important;
-        background-color: #E8E8E1 !important;
+        /* border: 1px solid red !important; */
+        /* background-color: #E8E8E1 !important; */
         span{
             color: ${({ theme }) => theme.colors.primary02} !important;
+        }
+        svg {
+            path {
+                stroke: ${({ theme }) => theme.colors.secondaryBlue};
+            }
         }
         
     }
@@ -245,5 +276,5 @@ export const Chieldren = styled.div`
     border-radius: 8px;
     margin: 2rem auto;    
     /* margin-left: 240px; */
-    height: fit-content;    
+    height: fit-content;        
 `;

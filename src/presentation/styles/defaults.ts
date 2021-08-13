@@ -45,7 +45,6 @@ export const SelectOption = styled.select`
 
   &:focus {
     border: 1px solid ${({ theme }) => theme.colors.blue};
-
     + label {
       color: ${({ theme }) => theme.colors.gray01};
     }
@@ -53,4 +52,15 @@ export const SelectOption = styled.select`
   option{
     /* font-family: ; */
   }
+`;
+
+
+export const ControlOptions = styled.div`   
+    border: 1px solid red;
+
+    /* border: 1px solid blue; */
+    margin: auto;
+    /* width: 50%; */
+    display: flex;
+    justify-content: space-between;
 `;

@@ -1,8 +1,9 @@
-// export const BASE_API = 'http://192.168.0.3:3333/'; //LOCALHOST JOSI;
+//export const BASE_API = 'http://192.168.0.4:3333/'; //LOCALHOST JOSI;
 export const BASE_API = 'https://warehouse-icct.herokuapp.com/'; //ONLINE JUNIOR;
 
 //USERS
 export const LIST_USER = 'user/list';
+export const DELETE_USER = 'user/delete/';
 export const ADD_EMPLOYEE = 'employee/register';
 export const CHECK_EMAIL = 'employee/validate/email';
 export const USER_LOGIN = 'user/login';
@@ -57,6 +58,18 @@ export const LIST_DEPARTMENT = 'department/list';
 export const ADD_DEPARTMENT = 'department/register';
 export const UPDATE_DEPARTMENT = 'department/edit/';
 export const DELETE_DEPARTMENT = 'department/delete/';
+
+//COST CENTER
+export const LIST_COSTCENTER = 'costcenter/list';
+export const ADD_COSTCENTER = 'costcenter/register';
+export const UPDATE_COSTCENTER = 'costcenter/edit/';
+export const DELETE_COSTCENTER = 'costcenter/delete/';
+
+//COST CENTER
+export const LIST_PURCHASINGSECTOR = 'purchasingsector/list';
+export const ADD_PURCHASINGSECTOR = 'purchasingsector/register';
+export const UPDATE_PURCHASINGSECTOR = 'purchasingsector/edit/';
+export const DELETE_PURCHASINGSECTOR = 'purchasingsector/delete/';
 
 //function
 export const LIST_FUNCTION = 'function/list';

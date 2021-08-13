@@ -1,11 +1,8 @@
 import styled from 'styled-components';
 
-export const PageHomeContent = styled.div`    
-    .control-over{
-        overflow: auto;
-    }
+export const PageHomeContent = styled.div`            
 
-    @media (max-width: 2000px) {
+    /* @media (max-width: 2000px) {
         .control-over{
             max-height: 400px;
         }
@@ -21,13 +18,20 @@ export const PageHomeContent = styled.div`
         .control-over{
             max-height: 160px;            
         }
-    }
+    } */
 `;
 
-export const ContenHome = styled.form`
-    background-color: ${({ theme }) => theme.colors.white};    
-    min-height: 60vh;    
+export const ContenHome = styled.div`
+    background-color: ${({ theme }) => theme.colors.white};
+    min-height: 50vh;    
     width: 100%;
+    padding: 0 2rem;    
+    /* background-color: ${({ theme }) => theme.colors.warning}; */
+`;
+
+export const FormRegistered = styled.div`
+    background-color: ${({ theme }) => theme.colors.white};
+    border-radius: 8px;
 `;
 
 export const Back = styled.div`
@@ -44,17 +48,38 @@ export const Back = styled.div`
 
 export const TitleTable = styled.div`
     padding: 0 2rem;
+
     h1{
         font-size: 1.5rem;
         color: ${({ theme }) => theme.colors.primary02};
         font-weight: 700;
         margin: 1rem 0;
     }
-    border-bottom: 1px solid ${({ theme }) => theme.colors.gray05};
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray05};    
+
 `;
 
-export const FormAdd = styled.div`
-    padding: 0 2rem;
+interface PropsFormAdd {
+    center?: 'yes';
+}
+
+export const FormAdd = styled.form<PropsFormAdd>`
+    display: flex;
+    flex-direction: column;
+    align-items:  ${(props) => props.center == 'yes' ? 'center' : 'initial'} ;
+    /* align-items: initial; */
+    padding: 2rem;
+    background-color: ${({ theme }) => theme.colors.white};
+    border-radius: 8px;
+    .title-current-aba{
+        /* padding-top: 2rem; */
+        h1{
+            font-size: 1.75rem;
+            font-weight: 500;
+            color: ${({ theme }) => theme.colors.gray07};    
+        }
+    }
+    
     .tree{
         display: flex;
         justify-content: space-between;
@@ -66,26 +91,42 @@ export const FormAdd = styled.div`
         width: 65%;
         display: flex;
         justify-content: space-between;
+        flex-wrap: wrap;
         div{
             width: 46%;
         }
     }    
-`;
-
-interface TableSizes {
-    tam: number;
-}
+    `;
 
 export const HeaderTable = styled.ul`    
     padding: 0 2rem;
     list-style: none;
     display: flex;
     justify-content: space-between;
-    margin-top: 1.5rem;    
+    margin-top: 1.5rem;        
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray08};
     li{
+        font-weight: 600;
         padding: 1rem;
         font-size: 14px;
-        color: ${({ theme }) => theme.colors.gray02};        
+        color: ${({ theme }) => theme.colors.gray07};        
+    }    
+`;
+
+export const ScroolContentTable = styled.ul`  
+    height: 35vh;
+    overflow-x: auto;
+    scrollbar-width: thin;          /* "auto" or "thin" */
+    scrollbar-color: ${({ theme }) => theme.colors.white};
+    ::-webkit-scrollbar {
+        width: 5px;
+        height: 8px;
+        background-color: ${({ theme }) => theme.colors.white};
+        border-radius: 20px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: ${({ theme }) => theme.colors.gray05};
     }
 `;
 
@@ -95,23 +136,27 @@ export const ContentTable = styled.ul`
     display: flex;
     justify-content: space-between;
     margin-top: 1.5rem;
+    border-bottom: 1px solid ${({ theme }) => theme.colors.gray08};    
     li{
         padding: 1rem;
         font-size: 14px;
         color: ${({ theme }) => theme.colors.gray03};
+
     }
     .options{
         display: flex;
-        justify-content: space-between;        
+        justify-content: space-between;
+        padding: 0;
         .option{
+            padding: 0;
             display: flex;
-            align-items: center;            
-            width: 50%;
+            align-items: center;
+            width: 40%;
             svg {
                 margin-right: 5px;
             }
             span{
-                font-size: 14px;
+                font-size: 12px;
                 color: ${({ theme }) => theme.colors.gray03};
             }
             cursor: pointer;
