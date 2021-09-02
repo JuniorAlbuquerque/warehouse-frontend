@@ -9,11 +9,15 @@ declare module "styled-components" {
       primary: string;
       primary02: string;
       blue: string;
+      blue7: string;
       gray: string;
+      gray00: string;
       gray01: string;
       gray02: string;
       gray03: string;
       gray05: string;
+      gray07: string;
+      gray08: string;
       secondaryBlue: string;
 
       white: string;

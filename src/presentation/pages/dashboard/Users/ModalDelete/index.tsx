@@ -3,7 +3,7 @@ import { useHistory } from "react-router-dom";
 
 //API
 import api from "infra/services/api";
-import { DELETE_PALLET } from "infra/config/api";
+import { DELETE_USER } from "infra/config/api";
 
 //STYLES
 import {
@@ -36,7 +36,7 @@ const ModalDelete: React.FC<ModalProps> = ({ id, isOpen, onClose, updateData }) 
 
     const handleDelete = () => {
         setControlLoading('yes')
-        api.delete(DELETE_PALLET+id)
+        api.delete(DELETE_USER+id)
         .then((res) => {
             addToast({
                 type: "success",
@@ -48,10 +48,11 @@ const ModalDelete: React.FC<ModalProps> = ({ id, isOpen, onClose, updateData }) 
             onClose();
         })
         .catch((err) => {
+            console.log(err.response.data.message)
             addToast({
                 type: "error",
                 title: "Error",
-                message: "Error",
+                message: err.response.data.message? err.response.data.message : "Error",
             });
             setControlLoading('no')
         });
@@ -73,7 +74,9 @@ const ModalDelete: React.FC<ModalProps> = ({ id, isOpen, onClose, updateData }) 
                     <span onClick={onClose}>X</span>
                 </TitleModal>
                 <Description>
-                    Are you sure you want to delete this pallet?
+                        Are you sure you want to delete this user?  
+                    {id}
+
                 </Description>
 
                 <Loading

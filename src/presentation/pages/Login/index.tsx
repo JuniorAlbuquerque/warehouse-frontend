@@ -111,7 +111,7 @@ const Login: React.FC = () => {
                 }
             })
         )
-        history.push('/dashboard/plants');
+        history.push('/dashboard/presentation');
       }
     })
     .catch((err) => {

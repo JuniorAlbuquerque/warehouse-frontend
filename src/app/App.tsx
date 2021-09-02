@@ -16,14 +16,16 @@ import ToastProvider from "../data/hooks/toast";
 const App: React.FC = () => {
   return (
     <Provider store={store}>
-    <Router>
+      <PersistGate loading={null} persistor={persistor}>
+    {/* <Router> */}
       <ThemeProvider theme={DefaultTheme}>
         <GlobalStyles />
         <ToastProvider>
           <Routes />
         </ToastProvider>
       </ThemeProvider>
-    </Router>
+    {/* </Router> */}
+      </PersistGate>
     </Provider>
   );
 };

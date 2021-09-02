@@ -9,7 +9,7 @@ const allReducers = combineReducers({
 })
 
 const persistConfigReducer = {
-  key: "os_persisted",
+  key: "ware_persisted",
   storage,
 };
 

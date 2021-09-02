@@ -1,6 +1,6 @@
 import React from 'react'
 import {
-  BrowserRouter as Router,
+  BrowserRouter as Router,  
   Switch,
   Route,
   Redirect,
@@ -14,19 +14,28 @@ import { SessionData } from 'data/store/reducers';
 import Auth from './Auth';
 import Administrator from './Administrator';
 
-function Routes ({ session }: { session: SessionData }){
+import TopAndSide from 'presentation/layouts/TopAndSide';
 
-  function renderPageRoutes () {
-    if(session.user.user_name !== 'nothing') {
-      return Administrator;      
+function Routes ({ session }: { session: SessionData }){
+  function renderPageRoutes () {    
+    if(session.user) { 
+        if(session.user.user_name !== 'nothing') {
+          return Administrator;
+        
+        }else{
+            return Auth;
+        }
     }else{
-      return Auth;
+        return Auth;  
     }
+
   }
   return (
-    <Route>
-      {renderPageRoutes()}
-    </Route>
+    <Router>
+      <Route>
+        {renderPageRoutes()}
+      </Route>
+    </Router>
   );
 }
 
