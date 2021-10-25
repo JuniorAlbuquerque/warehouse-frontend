@@ -17,26 +17,18 @@ import ModalDelete from "./ModalDelete";
 import {
   PageHomeContent,
   ContenHome,
-  TitleTable,
   HeaderTable,
   ContentTable,
   // Back,
-  FormAdd,
   ScroolContentTable
 } from "../defaultStyles";
 
-import {
-  Field,
-  Input,
-  SelectOption,
-} from "presentation/styles/defaults";
 
 //ASSETS
 //import ArrowLeft from 'assets/icons/arrow-left.svg';
 
 //INTERFACES
 import { InterfaceWarehouse } from "data/protocols/IWarehosue";
-import { InterfacePlants } from "data/protocols/IPlants";
 import TitleContainerWarehouse from "presentation/components/TitleContainerWarehouse";
 
 type ValidateEntry = {
@@ -47,25 +39,25 @@ type ValidateEntry = {
 const Werehouse: React.FC = (props: any) => {
   const history = useHistory();
   const { addToast } = useToast();
-  const { register, handleSubmit, reset, formState: { errors } } = useForm<ValidateEntry>();
+  const { handleSubmit, reset } = useForm<ValidateEntry>();
   const [controlLoading, setControlLoading] = useState<string>('no');
   const [datasWarehouses, setDatasWarehouses] = useState<InterfaceWarehouse[]>([]);
-  const [datasPlants, setDatasPlants] = useState<InterfacePlants[]>([]);
   const [updateEffect, setUpdateEffect] = useState(false);
   const [modalDelete, setModalDelete] = useState(false);
   const [currentID, setCurrentID] = useState(9999);
+  
   const [datas, setDatas] =  useState({
     name_warehouse: '',
     plant: '',
   })
-
-  const updateData = (name: string, value: string) => {    
-    if (name !== null && value !== null) {
-        setDatas({ ...datas, [name]: value });
-    }
-  };
-
+  
   useEffect(() => {
+    const updateData = (name: string, value: string) => {    
+      if (name !== null && value !== null) {
+          setDatas({ ...datas, [name]: value });
+      }
+    };
+
     let aux : number = 0;
     api
       .get(LIST_WAREHOUSE)
@@ -81,27 +73,14 @@ const Werehouse: React.FC = (props: any) => {
           message: "Error",
         });
       });
-  }, [updateEffect]);
+
+  }, [datas, addToast]);
 
   const controlModalDelete = () => {
   setModalDelete(!modalDelete);
   }
 
-  useEffect(() => {
-    api
-    .get(LIST_PLANT)
-        .then((res) => {
-          setDatasPlants(res.data);
-        })
-        .catch((err) => {
-          addToast({
-            type: "error",
-            title: "Error when bringing the plants",
-            message: "Error",
-          });
-
-        });
-      }, []);
+  
 
   const onSubmit = (data: ValidateEntry) => {
     reset();

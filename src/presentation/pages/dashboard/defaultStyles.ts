@@ -66,7 +66,7 @@ interface PropsFormAdd {
 export const FormAdd = styled.form<PropsFormAdd>`
     display: flex;
     flex-direction: column;
-    align-items:  ${(props) => props.center == 'yes' ? 'center' : 'initial'} ;
+    align-items:  ${(props) => props.center === 'yes' ? 'center' : 'initial'} ;
     /* align-items: initial; */
     padding: 2rem;
     background-color: ${({ theme }) => theme.colors.white};

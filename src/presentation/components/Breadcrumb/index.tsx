@@ -16,7 +16,7 @@ interface Props {
     back : false | true;
 }
 
-const Breadcrumb : React.FC<Props> = ( { back, before, current } ) => {
+const Breadcrumb : React.FC<Props> = ({ back, before, current }) => {
     const history = useHistory();
     return (
         <ContainerBreadcrumb state={back}>
